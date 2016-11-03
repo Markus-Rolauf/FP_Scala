@@ -1,18 +1,11 @@
 import scala.collection.immutable.Stream.Cons
 import scala.collection.immutable.Nil
+import scala.annotation.tailrec
 
 object Lists {
   def main(args : Array[String]) : Unit = {
 
-    val x = List(1, 2, 3, 4, 5, 6) match {
-      case x :: (2 :: (4 :: _)) => x
-      case Nil => 42
-      case x :: y :: 3 :: 4 :: _ => y
-      case h :: t => 11
-      case _ => 101
-    }
-
-    println(x)
+    println(apppend(List(1, 2, 3), 4))
   }
 
   def tail[A](list : List[A]) : List[A] =
@@ -41,5 +34,25 @@ object Lists {
       case Nil => Nil
       case h :: t => if (func(h)) dropWhile(list, func) else list
     }
+
+  def length[A](list : List[A]) : Int =
+    list.foldRight(0)((_, n) => 1 + n)
+
+  def length2[A](list : List[A]) : Int =
+    list.foldLeft(0)((n, _) => 1 + n)
+
+  @tailrec
+  def foldL[A, B](as : List[A], acc : B)(f : (B, A) => B) : B =
+    as match {
+      case Nil => acc
+      case head :: tail => foldL(tail, f(acc, head))(f)
+
+    }
+
+  def reverse[A](as : List[A]) : List[A] =
+    as.foldLeft(List[A]())((b, a) => a :: b)
+
+  def apppend[A](as : List[A], a : A) : List[A] =
+    as.foldRight(List[A](a))((org, acc) => org :: acc)
 
 }
