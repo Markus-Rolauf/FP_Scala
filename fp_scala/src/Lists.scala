@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 object Lists {
   def main(args : Array[String]) : Unit = {
 
-    println(apppend(List(1, 2, 3), 4))
+    println(concat(List(List(1, 2, 3), List(4, 5, 6))))
   }
 
   def tail[A](list : List[A]) : List[A] =
@@ -55,4 +55,6 @@ object Lists {
   def apppend[A](as : List[A], a : A) : List[A] =
     as.foldRight(List[A](a))((org, acc) => org :: acc)
 
+  def concat[A](lists : List[List[A]]) : List[A] =
+    lists.foldLeft(List[A]())((list, acc) => list.foldRight(acc)((elem, acc) => elem :: acc))
 }
