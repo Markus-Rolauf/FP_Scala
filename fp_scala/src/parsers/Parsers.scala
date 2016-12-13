@@ -3,12 +3,14 @@ package parsers
 
 import language.higherKinds
 import language.implicitConversions
+import scala.util.matching.Regex
 
 trait Parsers[ParseError, Parser[+_]] { self =>
 
   implicit def char(c : Char) : Parser[Char]
   implicit def string(s : String) : Parser[String]
   implicit def operators[A](p : Parser[A]) = ParserOps[A](p)
+  implicit def regex(r : Regex) : Parser[String]
   implicit def asStringParser[A](a : A)(implicit f : A => Parser[String]) : ParserOps[String] = ParserOps(f(a))
 
   def run[A](p : Parser[A])(input : String) : Either[ParseError, A]
