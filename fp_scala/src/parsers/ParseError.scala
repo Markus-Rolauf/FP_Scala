@@ -1,7 +1,0 @@
-
-
-package parsers
-
-trait ParseError {
-  
-}
